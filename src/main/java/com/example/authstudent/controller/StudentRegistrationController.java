@@ -25,24 +25,45 @@ public class StudentRegistrationController {
         return employeService.findAllEmploye();
     }
 
-    @GetMapping("/{id}")
-    public ResponseEntity<Optional<StudentRegistration>> findEmployeById(@PathVariable("id") Long id, @RequestHeader("Authorization") String token) {
-        return ResponseEntity.ok(employeService.findById(id, token));
+    @GetMapping("/me")
+    public ResponseEntity<?> getLoggedInUser(@RequestHeader("Authorization") String token) {
+        try {
+            String email = employeService.validateToken(token);
+            Optional<StudentRegistration> user = employeService.findByEmail(email);
+    
+            if (user.isPresent()) {
+                return ResponseEntity.ok(user.get());
+            } else {
+                return ResponseEntity.status(404).body("User not found");
+            }
+        } catch (Exception e) {
+            return ResponseEntity.status(401).body("Invalid or expired token");
+        }
     }
+    
 
     @PostMapping
     public StudentRegistration saveEmploye(@RequestBody StudentRegistration employe) {
         return employeService.saveEmploye(employe);
     }
 
-    @PutMapping("/{id}")
-    public ResponseEntity<StudentRegistration> updateEmploye(@PathVariable("id") Long id, @RequestBody StudentRegistration employe, @RequestHeader("Authorization") String token) {
-        StudentRegistration updatedEmploye = employeService.updateEmploye(id, employe, token);
-        if (updatedEmploye != null) {
-            return ResponseEntity.ok(updatedEmploye);
+    @PutMapping("/update-profile")
+    public ResponseEntity<?> updateProfile(@RequestHeader("Authorization") String token, @RequestBody StudentRegistration updatedData) {
+        try {
+            String email = employeService.validateToken(token);
+            Optional<StudentRegistration> userOptional = employeService.findByEmail(email);
+    
+            if (userOptional.isPresent()) {
+                StudentRegistration updatedUser = employeService.updateProfile(userOptional.get(), updatedData);
+                return ResponseEntity.ok(updatedUser);
+            } else {
+                return ResponseEntity.status(404).body("User not found");
+            }
+        } catch (Exception e) {
+            return ResponseEntity.status(401).body("Invalid or expired token");
         }
-        return ResponseEntity.status(403).build();
     }
+    
 
     @DeleteMapping("/{id}")
     public ResponseEntity<String> deleteEmploye(@PathVariable("id") Long id, @RequestHeader("Authorization") String token) {

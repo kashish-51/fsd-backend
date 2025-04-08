@@ -48,31 +48,23 @@ public class StudentRegistrationServiceImpl implements StudentRegistrationServic
         return employeRepository.save(employe);
     }
 
-   @Override
-    public StudentRegistration updateEmploye(Long id, StudentRegistration employe, String token) {
-        try {
-            String email = validateToken(token);
-            Optional<StudentRegistration> existingEmploye = employeRepository.findById(id);
-            if (existingEmploye.isPresent() && existingEmploye.get().getEmail().equals(email)) {
-                StudentRegistration updatedEmploye = existingEmploye.get();
-                updatedEmploye.setName(employe.getName());
-                updatedEmploye.setPhoneNumber(employe.getPhoneNumber());
-                updatedEmploye.setCollegeName(employe.getCollegeName());
-                updatedEmploye.setEnrollmentNumber(employe.getEnrollmentNumber());
-                updatedEmploye.setDegree(employe.getDegree());
-                updatedEmploye.setYearOfStudy(employe.getYearOfStudy());
-                updatedEmploye.setCity(employe.getCity());
-                updatedEmploye.setSpecialAssistanceRequired(employe.isSpecialAssistanceRequired());
-                updatedEmploye.setGender(employe.getGender());
-                updatedEmploye.setDateOfBirth(employe.getDateOfBirth());
-                updatedEmploye.setAddress(employe.getAddress());
-                return employeRepository.save(updatedEmploye);
-            }
-        } catch (Exception e) {
-            return null;
-        }
-        return null;
+    @Override
+    public StudentRegistration updateProfile(StudentRegistration existingUser, StudentRegistration updatedData) {
+        existingUser.setName(updatedData.getName());
+        existingUser.setPhoneNumber(updatedData.getPhoneNumber());
+        existingUser.setCollegeName(updatedData.getCollegeName());
+        existingUser.setEnrollmentNumber(updatedData.getEnrollmentNumber());
+        existingUser.setDegree(updatedData.getDegree());
+        existingUser.setYearOfStudy(updatedData.getYearOfStudy());
+        existingUser.setCity(updatedData.getCity());
+        existingUser.setSpecialAssistanceRequired(updatedData.isSpecialAssistanceRequired());
+        existingUser.setGender(updatedData.getGender());
+        existingUser.setDateOfBirth(updatedData.getDateOfBirth());
+        existingUser.setAddress(updatedData.getAddress());
+    
+        return employeRepository.save(existingUser);
     }
+    
 
     @Override
     public boolean deleteEmploye(Long id, String token) {
@@ -136,11 +128,19 @@ public class StudentRegistrationServiceImpl implements StudentRegistrationServic
     }
 
     public String validateToken(String token) {
+        if (token.startsWith("Bearer ")) {
+            token = token.substring(7); // Strip "Bearer " prefix
+        }
         Claims claims = Jwts.parserBuilder()
                 .setSigningKey(SECRET_KEY)
                 .build()
-                .parseClaimsJws(token.replace("Bearer ", ""))
+                .parseClaimsJws(token)
                 .getBody();
         return claims.getSubject();
+    }
+    
+    @Override
+    public Optional<StudentRegistration> findByEmail(String email) {
+        return employeRepository.findByEmail(email);
     }
 }
