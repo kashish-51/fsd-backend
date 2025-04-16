@@ -53,14 +53,11 @@ public class StudentRegistrationServiceImpl implements StudentRegistrationServic
         existingUser.setName(updatedData.getName());
         existingUser.setPhoneNumber(updatedData.getPhoneNumber());
         existingUser.setCollegeName(updatedData.getCollegeName());
-        existingUser.setEnrollmentNumber(updatedData.getEnrollmentNumber());
         existingUser.setDegree(updatedData.getDegree());
         existingUser.setYearOfStudy(updatedData.getYearOfStudy());
         existingUser.setCity(updatedData.getCity());
-        existingUser.setSpecialAssistanceRequired(updatedData.isSpecialAssistanceRequired());
         existingUser.setGender(updatedData.getGender());
-        existingUser.setDateOfBirth(updatedData.getDateOfBirth());
-        existingUser.setAddress(updatedData.getAddress());
+     
     
         return employeRepository.save(existingUser);
     }

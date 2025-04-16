@@ -27,8 +27,6 @@ public class StudentRegistration {
     @Column(name = "college_name", nullable = false)
     private String collegeName;
 
-    @Column(name = "enrollment_number", unique = true, nullable = false)
-    private String enrollmentNumber;
 
     @Column(name = "degree", nullable = false)
     private String degree;
@@ -39,36 +37,24 @@ public class StudentRegistration {
     @Column(name = "city", nullable = false)
     private String city;
 
-    @Column(name = "special_assistance_required")
-    private boolean specialAssistanceRequired;
 
     @Column(name = "gender")
     private String gender;
 
-    @Column(name = "dob")
-    @Temporal(TemporalType.DATE)
-    private Date dateOfBirth;
-
-    @Column(name = "address")
-    private String address;
 
     public StudentRegistration() {}
 
-    public StudentRegistration(Long id, String name, String email, String password, String phoneNumber, String collegeName, String enrollmentNumber, String degree, int yearOfStudy, String city, boolean specialAssistanceRequired, String gender, Date dateOfBirth, String address) {
+    public StudentRegistration(Long id, String name, String email, String password, String phoneNumber, String collegeName,  String degree, int yearOfStudy, String city, String gender) {
         this.id = id;
         this.name = name;
         this.email = email;
         this.password = password;
         this.phoneNumber = phoneNumber;
         this.collegeName = collegeName;
-        this.enrollmentNumber = enrollmentNumber;
         this.degree = degree;
         this.yearOfStudy = yearOfStudy;
         this.city = city;
-        this.specialAssistanceRequired = specialAssistanceRequired;
         this.gender = gender;
-        this.dateOfBirth = dateOfBirth;
-        this.address = address;
     }
 
     // Getters and Setters
@@ -91,9 +77,6 @@ public class StudentRegistration {
     public String getCollegeName() { return collegeName; }
     public void setCollegeName(String collegeName) { this.collegeName = collegeName; }
 
-    public String getEnrollmentNumber() { return enrollmentNumber; }
-    public void setEnrollmentNumber(String enrollmentNumber) { this.enrollmentNumber = enrollmentNumber; }
-
     public String getDegree() { return degree; }
     public void setDegree(String degree) { this.degree = degree; }
 
@@ -103,15 +86,7 @@ public class StudentRegistration {
     public String getCity() { return city; }
     public void setCity(String city) { this.city = city; }
 
-    public boolean isSpecialAssistanceRequired() { return specialAssistanceRequired; }
-    public void setSpecialAssistanceRequired(boolean specialAssistanceRequired) { this.specialAssistanceRequired = specialAssistanceRequired; }
-
     public String getGender() { return gender; }
     public void setGender(String gender) { this.gender = gender; }
 
-    public Date getDateOfBirth() { return dateOfBirth; }
-    public void setDateOfBirth(Date dateOfBirth) { this.dateOfBirth = dateOfBirth; }
-
-    public String getAddress() { return address; }
-    public void setAddress(String address) { this.address = address; }
 }
